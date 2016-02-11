@@ -180,12 +180,13 @@ class MainScreen(BoxLayout):
 
     def run(self,instance):
         #TODO: Display output in popup
-        #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.STDOUT)
+        #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
         command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
 
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         output, error = process.communicate()
+        #self.show_error(output)
         self.show_error(error)
         # while True:
         #     #Bind self.info_label.text to output.stdout.readline()
