@@ -180,8 +180,18 @@ class MainScreen(BoxLayout):
 
     def run(self,instance):
         #TODO: Display output in popup
-        output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"])
-        self.show_error(output)
+        #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.STDOUT)
+        command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+        output, error = process.communicate()
+        self.show_error(error)
+        # while True:
+        #     #Bind self.info_label.text to output.stdout.readline()
+        #     self.show_error(output.stdout.readline())
+        #     if output.poll() is not None:
+        #         break
         print('The button <%s> is being pressed' % instance.text)
 
     
