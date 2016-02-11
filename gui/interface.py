@@ -1,5 +1,6 @@
 import os
 import pypandoc
+import subprocess
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -72,7 +73,7 @@ class MainScreen(BoxLayout):
         self.element=resourceHandler()
 
         if welcome:
-            welcome_popup = Popup(title='Coursera ML in Python', content=Label(text='Hello World'),size_hint=(1, 1))
+            welcome_popup = Popup(title='Coursera ML in Python', content=Label(text='Coursera Assignment App'),size_hint=(1, 1))
             self.add_widget(welcome_popup)
             welcome_popup.open()
             Clock.schedule_once(self.start_app,3)
@@ -179,7 +180,8 @@ class MainScreen(BoxLayout):
 
     def run(self,instance):
         #TODO: Display output in popup
-        self.show_error('Cannot run')
+        output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"])
+        self.show_error(output)
         print('The button <%s> is being pressed' % instance.text)
 
     
