@@ -8,4 +8,4 @@ Dependencies
 
 3. matplotlib: `sudo pip install matplotlib`
 
-4. python-tk : `sudo apt-get install python-tk`
+4. python-tk : `sudo apt-get install python-tk tk-dev`
