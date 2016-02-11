@@ -276,7 +276,7 @@ class MainScreen(BoxLayout):
 class CourseraApp(App):
 
     def build(self):
-        return MainScreen(welcome=True)
+        return MainScreen(welcome=False)
     def on_pause(self):
         return True
 
