@@ -262,7 +262,8 @@ class MainScreen(BoxLayout):
             button.bind(on_press=self.update_currentFile)
             layout.add_widget(button)
 
-        filebar = ScrollView( size_hint=(1,1), do_scroll_x=True, do_scroll_y=False )
+        filebar = ScrollView(size_hint=(1,None), do_scroll_x=True, do_scroll_y=False )
+        filebar.size=layout.size
         filebar.add_widget(layout)
         return filebar
 
