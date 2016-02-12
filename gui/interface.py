@@ -90,10 +90,6 @@ class MainScreen(BoxLayout):
         self.clear_widgets()
         self.add_widget(self.titlebar())
         self.add_widget(self.maineditor())
-        scrollbar = ScrollView(size_hint=(1,None))
-        #TODO: Make filebar scrollable for smaller screens and many files
-        #scrollbar.add_widget(self.filebar())
-        #self.add_widget(scrollbar)
         self.add_widget(self.filebar())
         self.add_widget(self.console())
 
@@ -165,7 +161,14 @@ class MainScreen(BoxLayout):
         print 'Email',self.submit_ob.__login
         print 'Token', self.submit_ob.__password
         self.submit_popup.dismiss()
-        #TODO:submission call
+        #TODO: save token and give submission call
+        command = ["python","../"+self.current_ex+"/"+"submit.py"]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        
+        output= process.communicate()
+        #self.show_error(output)
+        self.show_error(output)
         #self.show_error(self.submit_ob.submit())
 
 
@@ -185,9 +188,9 @@ class MainScreen(BoxLayout):
         #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
         command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
 
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,stdin=subprocess.PIPE)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         
-        output, error = process.communicate('\n')
+        output = process.communicate()
         #self.show_error(output)
         self.show_error(output)
         #while True:
@@ -277,7 +280,7 @@ class MainScreen(BoxLayout):
 
     def show_error(self, e):
         self.info_label.text = str(e)
-        duration = len(self.info_label.text)/10
+        duration = len(self.info_label.text)/100
         anim = Animation(top=190.0, opacity=1, d=0.5) +\
             Animation(top=190.0, d=duration) +\
             Animation(top=0, opacity=0, d=2)        
