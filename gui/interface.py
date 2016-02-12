@@ -80,13 +80,13 @@ class MainScreen(BoxLayout):
             welcome_popup.open()
             Clock.schedule_once(self.start_app,3)
         else:
-            self.bind(size=self.draw_screen)
+            self.bind(size=self.draw_mainscreen)
   
     def start_app(self,*args):
-        self.draw_screen()
-        self.bind(size=self.draw_screen)
+        self.draw_mainscreen()
+        self.bind(size=self.draw_mainscreen)
 
-    def draw_screen(self,*args):
+    def draw_mainscreen(self,*args):
         self.clear_widgets()
         self.add_widget(self.titlebar())
         self.add_widget(self.maineditor())
@@ -161,14 +161,16 @@ class MainScreen(BoxLayout):
         print 'Email',self.submit_ob.__login
         print 'Token', self.submit_ob.__password
         self.submit_popup.dismiss()
+
         #TODO: save token and give submission call
         command = ["python","../"+self.current_ex+"/"+"submit.py"]
 
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
-        output= process.communicate()
+        output,error= process.communicate()
         #self.show_error(output)
-        self.show_error(output)
+        if not error == '':
+            self.show_error(error)
         #self.show_error(self.submit_ob.submit())
 
 
@@ -178,7 +180,7 @@ class MainScreen(BoxLayout):
         if current_file.endswith('\n'):
             current_file=current_file[:-1]
         self.current_file= current_file
-        self.draw_screen()
+        self.draw_mainscreen()
         print 'Current Exercise changed to: ', self.current_ex
 
 
@@ -188,11 +190,13 @@ class MainScreen(BoxLayout):
         #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
         command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
 
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
-        output = process.communicate()
+        output , error= process.communicate()
         #self.show_error(output)
-        self.show_error(output)
+        if not error == '':
+            self.show_error(error)
+        
         #while True:
         #     #Bind self.info_label.text to output.stdout.readline()
         #    self.show_error(process.stdout.readline())
@@ -226,7 +230,7 @@ class MainScreen(BoxLayout):
         return layout
 
     def saveAssignment(self,assignment,*largs):
-        print 'callback called'
+        self.show_message('Autosaved')
         try:
             if not self.element.readFile(self.current_ex,self.current_file)==assignment.text:
                 filehandler = self.element.writeFile(self.current_ex,self.current_file)
@@ -275,12 +279,20 @@ class MainScreen(BoxLayout):
         if instance.text.endswith('\n'):
             instance.text=instance.text[:-1]
         self.current_file = instance.text
-        self.draw_screen()
+        self.draw_mainscreen()
         print 'Current file changed to: ', self.current_file
+
+    def show_message(self, msg):
+        self.info_label.text = msg
+        duration = 1
+        anim = Animation(top=30.0, opacity=0.5, d=0.5) +\
+            Animation(top=30.0, d=duration) +\
+            Animation(top=0, opacity=0, d=2)        
+        anim.start(self.info_label)
 
     def show_error(self, e):
         self.info_label.text = str(e)
-        duration = len(self.info_label.text)/100
+        duration = len(self.info_label.text)/50
         anim = Animation(top=190.0, opacity=1, d=0.5) +\
             Animation(top=190.0, d=duration) +\
             Animation(top=0, opacity=0, d=2)        
