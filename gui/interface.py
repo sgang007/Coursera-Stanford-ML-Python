@@ -1,6 +1,8 @@
 import os
 import pypandoc
 import subprocess
+import kivy
+kivy.require('1.8.0')
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -183,16 +185,16 @@ class MainScreen(BoxLayout):
         #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
         command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
 
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,stdin=subprocess.PIPE)
         
-        output, error = process.communicate()
+        output, error = process.communicate('\n')
         #self.show_error(output)
-        self.show_error(error)
-        # while True:
+        self.show_error(output)
+        #while True:
         #     #Bind self.info_label.text to output.stdout.readline()
-        #     self.show_error(output.stdout.readline())
-        #     if output.poll() is not None:
-        #         break
+        #    self.show_error(process.stdout.readline())
+        #    if process.poll() is not None:
+        #        break
         print('The button <%s> is being pressed' % instance.text)
 
     
@@ -245,17 +247,25 @@ class MainScreen(BoxLayout):
             
     
     def filebar(self):
-        layout=BoxLayout(padding='2sp',size_hint=(1,None),height='100sp')
-        layout.orientation='horizontal'
+
+        layout = GridLayout(rows=1, size_hint=(None,None))
+        layout.bind(minimum_width=layout.setter('width'))
+
         files = self.element.files(self.current_ex)
         for f in files:
             if f.strip() == self.current_file:
                 button = ToggleButton(text=f,group = self.current_ex,state='down')
             else:
                 button = ToggleButton(text=f,group = self.current_ex,state='normal')
+            button.size=(200,100)
+            button.size_hint=(None,None)
             button.bind(on_press=self.update_currentFile)
             layout.add_widget(button)
-        return layout
+
+        filebar = ScrollView( size_hint=(1,1), do_scroll_x=True, do_scroll_y=False )
+        filebar.add_widget(layout)
+        return filebar
+
 
     def update_currentFile(self,instance):
         if instance.text.endswith('\n'):
