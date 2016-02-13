@@ -1,5 +1,4 @@
 import os
-import pypandoc
 import subprocess
 import kivy
 kivy.require('1.8.0')
@@ -21,48 +20,9 @@ from kivy.clock import Clock
 from functools import partial
 from kivy.animation import Animation
 from Submission import Submission
+from resource_handle import resourceHandler
 
 
-class resourceHandler():
-    def __init__(self, **args):
-        pass
-
-
-    def read_token(self,instance):
-        path = '../'+instance.current_ex+'/token.txt'
-        try:
-            credentials = open(path)
-            instance.email = credentials.readline().strip()
-            instance.token = credentials.readline().strip()
-            return True
-        except Exception, e:
-            return False
-
-
-
-    def files(self,excercise):
-        path = 'res/'+excercise+'/sources.txt'
-        filehandler = open(path)
-        filelist=[]
-        while True:
-            try:
-                filelist.append(filehandler.next())
-            except Exception, e:
-                return filelist
-    def manual(self, excercise):
-        path = 'res/'+excercise+'/manual.md'
-        return pypandoc.convert(path,'rst')
-
-    def writeFile(self,excercise,filename):
-        path = '../'+excercise+'/'+filename
-        f=open(path,'w')
-        return f
-
-    def readFile(self,excercise,filename):
-        path = '../'+excercise+'/'+filename
-        #print 'Opening ',path
-        f=open(path,'r')
-        return f.read()
 
 class MainScreen(BoxLayout):
 
@@ -89,9 +49,15 @@ class MainScreen(BoxLayout):
     def draw_mainscreen(self,*args):
         self.clear_widgets()
         self.add_widget(self.titlebar())
-        self.add_widget(self.maineditor())
+        self.add_widget(self.maineditor('e'))
         self.add_widget(self.filebar())
         self.add_widget(self.console())
+
+    def draw_runscreen(self,*args):
+        self.clear_widgets()
+        self.add_widget(self.titlebar())
+        self.add_widget(self.maineditor('r'))
+
 
     def titlebar(self):
         layout=BoxLayout(padding='2sp',size_hint=(1,None),height='65sp')
@@ -189,8 +155,10 @@ class MainScreen(BoxLayout):
         #TODO: Display output in popup
         #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
         command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
-
+        #self.show_message('Running Exercise',1)
+        print "Running"
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
         
         output , error= process.communicate()
         #self.show_error(output)
@@ -207,7 +175,7 @@ class MainScreen(BoxLayout):
     
    
         
-    def maineditor(self):
+    def maineditor(self,*args):
         layout=BoxLayout()
         if self.width < self.height:
             layout.orientation='vertical'
@@ -226,11 +194,15 @@ class MainScreen(BoxLayout):
         splitter.add_widget(code)
         layout.add_widget(splitter)
 
-        layout.add_widget(RstDocument(text=man))
+        if args[0]=='e':
+            layout.add_widget(RstDocument(text=man))
+        else:
+
+            layout.add_widget(terminal)
         return layout
 
     def saveAssignment(self,assignment,*largs):
-        self.show_message('Autosaved')
+        self.show_message('Autosaved',1)
         try:
             if not self.element.readFile(self.current_ex,self.current_file)==assignment.text:
                 filehandler = self.element.writeFile(self.current_ex,self.current_file)
@@ -264,13 +236,12 @@ class MainScreen(BoxLayout):
                 button = ToggleButton(text=f,group = self.current_ex,state='down')
             else:
                 button = ToggleButton(text=f,group = self.current_ex,state='normal')
-            button.size=(200,100)
-            button.size_hint=(None,None)
+            button.width=200
+            button.size_hint=(None,1)
             button.bind(on_press=self.update_currentFile)
             layout.add_widget(button)
 
         filebar = ScrollView(size_hint=(1,None), do_scroll_x=True, do_scroll_y=False )
-        filebar.size=layout.size
         filebar.add_widget(layout)
         return filebar
 
@@ -282,12 +253,11 @@ class MainScreen(BoxLayout):
         self.draw_mainscreen()
         print 'Current file changed to: ', self.current_file
 
-    def show_message(self, msg):
+    def show_message(self, msg,duration):
         self.info_label.text = msg
-        duration = 1
-        anim = Animation(top=30.0, opacity=0.5, d=0.5) +\
+        anim = Animation(top=30.0, opacity=0.5, d=0.1) +\
             Animation(top=30.0, d=duration) +\
-            Animation(top=0, opacity=0, d=2)        
+            Animation(top=0, opacity=0, d=0.1)        
         anim.start(self.info_label)
 
     def show_error(self, e):
