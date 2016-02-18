@@ -1,4 +1,7 @@
-from urllib import urlencode
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 from urllib2 import urlopen
 from json import loads, dumps
 from collections import OrderedDict
