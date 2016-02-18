@@ -88,7 +88,7 @@ class MainScreen(BoxLayout):
 
 
     def console(self):
-        layout = FloatLayout(size_hint=(1,None),height=100)
+        layout = FloatLayout(size_hint=(1,None),height=0)
         self.info_label = TextInput(size_hint=(1,None),readonly=True,background_color=(0,0,0,1),foreground_color=(1,1,1,1),opacity=0)
         self.info_label.text_size = self.size
         self.info_label.text = 'console'
