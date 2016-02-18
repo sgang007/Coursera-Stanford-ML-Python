@@ -255,9 +255,9 @@ class MainScreen(BoxLayout):
 
     def show_message(self, msg,duration):
         self.info_label.text = msg
-        anim = Animation(top=30.0, opacity=0.5, d=0.1) +\
+        anim = Animation(top=30.0, opacity=0.5, d=1) +\
             Animation(top=30.0, d=duration) +\
-            Animation(top=0, opacity=0, d=0.1)        
+            Animation(top=0, opacity=0, d=1)        
         anim.start(self.info_label)
 
     def show_error(self, e):
