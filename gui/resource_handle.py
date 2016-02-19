@@ -20,27 +20,28 @@ class resourceHandler():
 
 
     def exercises(self):
-        path = 'exercises/'
-        return os.listdir(path)
+        path = 'exercises/params.json'
+        exercises = json.load(open(path))['exercises']
+        return exercises
     
-    def files(self,excercise):
-        path = 'exercises/'+excercise+'/part_file.json'
+    def files(self,exercise):
+        path = 'exercises/'+exercise+'/part_file.json'
         filehandler = open(path)
         tmp = json.load(filehandler)       
         filelist = tmp['srcs']
         return filelist
     
-    def manual(self, excercise):
-        path = 'exercises/'+excercise+'/manual.md'
+    def manual(self, exercise):
+        path = 'exercises/'+exercise+'/manual.md'
         return pypandoc.convert(path,'rst')
 
-    def writeFile(self,excercise,filename):
-        path = 'exercises/'+excercise+'/'+filename
+    def writeFile(self,exercise,filename):
+        path = 'exercises/'+exercise+'/'+filename
         f=open(path,'w')
         return f
 
-    def readFile(self,excercise,filename):
-        path = 'exercises/'+excercise+'/'+filename
+    def readFile(self,exercise,filename):
+        path = 'exercises/'+exercise+'/'+filename
         #print 'Opening ',path
         f=open(path,'r')
         return f.read()
