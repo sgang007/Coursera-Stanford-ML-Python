@@ -1,4 +1,3 @@
-import os
 import subprocess
 import kivy
 kivy.require('1.8.0')
@@ -31,7 +30,7 @@ class MainScreen(BoxLayout):
         self.orientation='vertical'
         self.current_ex = 'ex1'
         self.current_file = 'warmUpExercise.py'
-        self.submit_ob = Submission()
+        #self.submit_ob = Submission()
         self.element=resourceHandler()
 
         if welcome:
@@ -77,7 +76,7 @@ class MainScreen(BoxLayout):
         run.bind(on_press=self.run)
 
         ex_dropdown = Spinner(text=self.current_ex,size_hint=(1,1))
-        ex_dropdown.values = os.listdir('./res/')
+        ex_dropdown.values = self.element.exercises()
         ex_dropdown.bind(text=self.updateExercise)
 
         layout.add_widget(run)
@@ -134,7 +133,7 @@ class MainScreen(BoxLayout):
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         output,error= process.communicate()
-        #self.show_error(output)
+        self.show_error(output)
         if not error == '':
             self.show_error(error)
         #self.show_error(self.submit_ob.submit())

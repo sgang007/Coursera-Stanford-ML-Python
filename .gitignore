@@ -1,3 +1,4 @@
+bin
 *.pyc
 .idea
 iterate.dat

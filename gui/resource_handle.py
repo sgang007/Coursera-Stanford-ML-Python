@@ -1,4 +1,6 @@
 import pypandoc
+import os
+
 
 class resourceHandler():
     def __init__(self, **args):
@@ -16,9 +18,12 @@ class resourceHandler():
             return False
 
 
-
+    def exercises(self):
+        path = 'exercises/'
+        return os.listdir(path)
+    
     def files(self,excercise):
-        path = 'res/'+excercise+'/sources.txt'
+        path = 'exercises/'+excercise+'/sources.txt'
         filehandler = open(path)
         filelist=[]
         while True:
@@ -26,17 +31,19 @@ class resourceHandler():
                 filelist.append(filehandler.next())
             except Exception, e:
                 return filelist
+    
     def manual(self, excercise):
-        path = 'res/'+excercise+'/manual.md'
-        return pypandoc.convert(path,'rst')
+        path = 'exercises/'+excercise+'/manual.md'
+        #print path
+        return pypandoc.convert(path,'md','rst')
 
     def writeFile(self,excercise,filename):
-        path = '../'+excercise+'/'+filename
+        path = 'exercises/'+excercise+'/'+filename
         f=open(path,'w')
         return f
 
     def readFile(self,excercise,filename):
-        path = '../'+excercise+'/'+filename
+        path = 'exercises/'+excercise+'/'+filename
         #print 'Opening ',path
         f=open(path,'r')
         return f.read()
