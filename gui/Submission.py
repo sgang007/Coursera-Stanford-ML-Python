@@ -1,4 +1,7 @@
-from urllib import urlencode
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 from urllib2 import urlopen
 from json import loads, dumps
 from collections import OrderedDict
@@ -18,10 +21,6 @@ class Submission():
         self.__login = None
         self.__password = None
 
-    def __init__(self):
-        self.__submit_url = 'https://www-origin.coursera.org/api/onDemandProgrammingImmediateFormSubmissions.v1'
-        
-        
     def submit(self):
         print '==\n== Submitting Solutions | Programming Exercise %s\n==' % self.__homework
         self.login_prompt()
@@ -60,7 +59,7 @@ class Submission():
             with open('token.txt', 'w') as f:
                 f.write(self.__login + '\n')
                 f.writelines(self.__password)
-        return response
+
 
     def login_prompt(self):
         try:
