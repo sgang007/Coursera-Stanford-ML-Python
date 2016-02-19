@@ -1,0 +1,17 @@
+{
+  "homework": "regularized-linear-regression-and-bias-variance",
+  "part_names": [
+    "Regularized Linear Regression Cost Function",
+    "Regularized Linear Regression Gradient",
+    "Learning Curve",
+    "Polynomial Feature Mapping",
+    "Validation Curve"
+  ],
+  "srcs": [
+    "linearRegCostFunction.py",
+    "linearRegCostFunction.py",
+    "learningCurve.py",
+    "polyFeatures.py",
+    "validationCurve.py"
+  ]
+}

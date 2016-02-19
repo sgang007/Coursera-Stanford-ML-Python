@@ -1,0 +1,17 @@
+{
+  "homework": "neural-network-learning",
+  "part_names": [
+    "Feedforward and Cost Function",
+    "Regularized Cost Function",
+    "Sigmoid Gradient",
+    "Neural Network Gradient (Backpropagation)",
+    "Regularized Gradient"
+  ],
+  "srcs": [
+    "nnCostFunction.py",
+    "nnCostFunction.py",
+    "sigmoidGradient.py",
+    "nnCostFunction.py",
+    "nnCostFunction.py"
+  ]
+}

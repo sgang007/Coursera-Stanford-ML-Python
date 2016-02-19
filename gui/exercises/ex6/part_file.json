@@ -1,0 +1,15 @@
+{
+  "homework": "support-vector-machines",
+  "part_names": [
+    "Gaussian Kernel",
+    "Parameters (C, sigma) for Dataset 3",
+    "Email Preprocessing",
+    "Email Feature Extraction"
+  ],
+  "srcs": [
+    "gaussianKernel.py",
+    "dataset3Params.py",
+    "processEmail.py",
+    "emailFeatures.py"  
+  ]
+}

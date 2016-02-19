@@ -1,0 +1,15 @@
+{
+  "homework": "multi-class-classification-and-neural-networks",
+  "part_names": [
+    "Regularized Logistic Regression",
+    "One-vs-All Classifier Training",
+    "One-vs-All Classifier Prediction",
+    "Neural Network Prediction Function"
+   ],
+  "srcs": [
+    "lrCostFunction.py",
+    "oneVsAll.py",
+    "predictOneVsAll.py",
+    "predict.py"
+  ]
+}

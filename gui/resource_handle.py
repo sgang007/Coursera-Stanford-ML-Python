@@ -26,7 +26,8 @@ class resourceHandler():
     def files(self,excercise):
         path = 'exercises/'+excercise+'/part_file.json'
         filehandler = open(path)
-        filelist = json.load(filehandler)['srcs']        
+        tmp = json.load(filehandler)       
+        filelist = tmp['srcs']
         return filelist
     
     def manual(self, excercise):

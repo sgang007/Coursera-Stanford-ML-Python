@@ -1,0 +1,17 @@
+{
+  "homework": "k-means-clustering-and-pca",
+  "part_names": [
+    "Find Closest Centroids (k-Means)",
+    "Compute Centroid Means (k-Means)",
+    "PCA",
+    "Project Data (PCA)",
+    "Recover Data (PCA)"
+  ],
+  "srcs": [
+    "findClosestCentroids.py",
+    "computeCentroids.py",
+    "pca.py",
+    "projectData.py",
+    "recoverData"      
+  ]
+}

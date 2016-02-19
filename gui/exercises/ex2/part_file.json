@@ -1,0 +1,19 @@
+{
+  "homework": "logistic-regression",
+  "part_names": [
+    "Sigmoid Function",
+    "Logistic Regression Cost",
+    "Logistic Regression Gradient",
+    "Predict",
+    "Regularized Logistic Regression Cost",
+    "Regularized Logistic Regression Gradient"
+  ],
+  "srcs": [
+    "sigmoid.py",
+    "costFunction.py",
+    "gradientFunction.py",
+    "predict.py",
+    "costFunctionReg.py",
+    "gradientFunctionReg.py"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "homework": "anomaly-detection-and-recommender-systems",
+  "part_names": [
+    "Estimate Gaussian Parameters",
+    "Select Threshold",
+    "Collaborative Filtering Cost",
+    "Collaborative Filtering Gradient",
+    "Regularized Cost",
+    "Regularized Gradient"
+  ],
+  "srcs": [
+    "estimateGaussian.py",
+    "selectThreshold.py",
+    "cofiCostFunc.py",
+    "cofiCostFunc.py",
+    "cofiCostFunc.py",
+    "cofiCostFunc.py"    
+  ]
+}
