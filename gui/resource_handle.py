@@ -1,5 +1,6 @@
 import pypandoc
 import os
+import json
 
 
 class resourceHandler():
@@ -23,14 +24,10 @@ class resourceHandler():
         return os.listdir(path)
     
     def files(self,excercise):
-        path = 'exercises/'+excercise+'/sources.txt'
+        path = 'exercises/'+excercise+'/part_file.json'
         filehandler = open(path)
-        filelist=[]
-        while True:
-            try:
-                filelist.append(filehandler.next())
-            except Exception, e:
-                return filelist
+        filelist = json.load(filehandler)['srcs']        
+        return filelist
     
     def manual(self, excercise):
         path = 'exercises/'+excercise+'/manual.md'
