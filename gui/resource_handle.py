@@ -1,12 +1,26 @@
 import pypandoc
 import os
 import json
+import subprocess
+import sys
+import StringIO
+import contextlib
 
+
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = StringIO.StringIO()
+    sys.stdout = stdout
+    yield stdout
+    sys.stdout = old
 
 class resourceHandler():
     def __init__(self, **args):
         pass
-
+    
+   
 
     def read_token(self,instance):
         path = '../'+instance.current_ex+'/token.txt'
@@ -45,3 +59,26 @@ class resourceHandler():
         #print 'Opening ',path
         f=open(path,'r')
         return f.read()
+
+    def run_ex(self,exercise,filename):
+        #redirect and change system streams
+        os.chdir('exercises/'+exercise)
+        os.system('export PYTHONPATH=../..')
+        
+
+        split_ex = open(filename).read().split('raw_input("Program paused. Press Enter to continue...")')
+        code = split_ex[0]
+        
+        with stdoutIO() as s:
+            exec(code)
+        #output = subprocess.Popen(code, stdout=subprocess.PIPE)
+        #restore system streams
+        os.chdir('../..')
+
+        # output = codeOut.getvalue()
+        # error = codeErr.getvalue()
+        
+        print 'output: ',s.getvalue(),''
+        return s.getvalue(),''
+
+
