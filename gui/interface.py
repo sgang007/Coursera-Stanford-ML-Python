@@ -229,7 +229,7 @@ class MainScreen(BoxLayout):
         layout = GridLayout(rows=1, size_hint=(None,None))
         layout.bind(minimum_width=layout.setter('width'))
 
-        files = self.element.files(self.current_ex)
+        files = list(set(self.element.files(self.current_ex)))
         for f in files:
             if f.strip() == self.current_file:
                 button = ToggleButton(text=f,group = self.current_ex,state='down')
