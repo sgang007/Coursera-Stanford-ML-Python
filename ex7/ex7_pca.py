@@ -70,8 +70,8 @@ U, S, V = pca(X_norm)
 #  Draw the eigenvectors centered at mean of data. These lines show the
 #  directions of maximum variations in the dataset.
 mu2 = mu + 1.5 * S.dot(U.T)
-plt.plot([mu[0], mu2[0, 0]], [mu[1], mu2[0, 1]], '-k', lw=2)
-plt.plot([mu[0], mu2[1, 0]], [mu[1], mu2[1, 1]], '-k', lw=2)
+plt.plot([[mu[0], mu2[0, 0]], [[mu[1], mu2[0, 1]], '-k', lw=2)
+plt.plot([[mu[0], mu2[1, 0]], [[mu[1], mu2[1, 1]], '-k', lw=2)
 show()
 
 print 'Top eigenvector: '
