@@ -1,32 +1,34 @@
 import numpy as np
+import json
 
 from Submission import Submission
 from Submission import sprintf
 
 __all__ = ['submit']
 
-homework = 'linear-regression'
+# homework = 'linear-regression'
 
-part_names = [
-    'Warm up exercise',
-    'Computing Cost (for one variable)',
-    'Gradient Descent (for one variable)',
-    'Feature Normalization',
-    'Computing Cost (for multiple variables)',
-    'Gradient Descent (for multiple variables)',
-    'Normal Equations',
-    ]
+# part_names = [
+#     'Warm up exercise',
+#     'Computing Cost (for one variable)',
+#     'Gradient Descent (for one variable)',
+#     'Feature Normalization',
+#     'Computing Cost (for multiple variables)',
+#     'Gradient Descent (for multiple variables)',
+#     'Normal Equations',
+#     ]
 
-srcs = [
-    'warmUpExercise.py',
-    'computeCost.py',
-    'gradientDescent.py',
-    'featureNormalize.py',
-    'computeCostMulti.py',
-    'gradientDescentMulti.py',
-    'normalEqn.py',
-    ]
-
+# srcs = [
+#     'warmUpExercise.py',
+#     'computeCost.py',
+#     'gradientDescent.py',
+#     'featureNormalize.py',
+#     'computeCostMulti.py',
+#     'gradientDescentMulti.py',
+#     'normalEqn.py',
+#     ]
+part_file = open('part_names.json')
+part_file = json.load(part_file)
 
 def output(part_id):
     X1 = np.column_stack((np.ones(20), np.exp(1) + np.exp(2) * np.linspace(0.1, 2, 20)))
@@ -34,7 +36,7 @@ def output(part_id):
     X2 = np.column_stack((X1, X1[:,1]**0.5, X1[:,1]**0.25))
     Y2 = np.power(Y1, 0.5) + Y1
 
-    fname = srcs[part_id-1].rsplit('.',1)[0]
+    fname = part_file['srcs'][part_id-1].rsplit('.',1)[0]
     mod = __import__(fname, fromlist=[fname], level=1)
     func = getattr(mod, fname)
 
@@ -53,5 +55,5 @@ def output(part_id):
     elif part_id == 7:
         return sprintf('%0.5f ', func(X2, Y2))
 
-s = Submission(homework, part_names, srcs, output)
+s = Submission(part_file['homework'], part_file['part_names'], part_file['srcs'], output)
 s.submit()
