@@ -235,7 +235,10 @@ class MainScreen(BoxLayout):
                 button = ToggleButton(text=f,group = self.current_ex,state='down')
             else:
                 button = ToggleButton(text=f,group = self.current_ex,state='normal')
-            button.width=200
+            if self.width/len(files) < 200:
+                button.width=200
+            else:
+                button.width = int(self.width/len(files))
             button.size_hint=(None,1)
             button.bind(on_press=self.update_currentFile)
             layout.add_widget(button)
