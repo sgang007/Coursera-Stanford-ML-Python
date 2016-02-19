@@ -34,8 +34,7 @@ class resourceHandler():
     
     def manual(self, excercise):
         path = 'exercises/'+excercise+'/manual.md'
-        #print path
-        return pypandoc.convert(path,'md','rst')
+        return pypandoc.convert(path,'rst')
 
     def writeFile(self,excercise,filename):
         path = 'exercises/'+excercise+'/'+filename
