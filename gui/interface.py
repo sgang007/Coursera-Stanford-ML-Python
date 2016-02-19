@@ -157,7 +157,6 @@ class MainScreen(BoxLayout):
         #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
         self.draw_runscreen()
         self.terminal.text = 'Running exercises'
-        self.terminal.text = 'Boom boom'
         # command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
         # #self.show_message('Running Exercise',1)
         # print "Running"
