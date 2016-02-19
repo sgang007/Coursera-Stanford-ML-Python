@@ -31,7 +31,7 @@ class MainScreen(BoxLayout):
         self.current_ex = 'ex1'
         self.current_file = 'warmUpExercise.py'
         #self.submit_ob = Submission()
-        self.element=resourceHandler()
+        self.res=resourceHandler()
 
         if welcome:
             welcome_popup = Popup(title='Coursera ML in Python', content=Label(text='Coursera Assignment App'),size_hint=(1, 1))
@@ -56,6 +56,8 @@ class MainScreen(BoxLayout):
         self.clear_widgets()
         self.add_widget(self.titlebar())
         self.add_widget(self.maineditor('r'))
+        self.add_widget(self.filebar())
+        self.add_widget(self.console())
 
 
     def titlebar(self):
@@ -67,7 +69,7 @@ class MainScreen(BoxLayout):
         #credentials.children[1].bind(on_press=self.submit_popup.dismiss)
 
         submit = Button(text='Submit',size_hint=(0.4,1))
-        if self.element.read_token(self):
+        if self.res.read_token(self):
             submit.bind(on_press=partial(self.submit_assignment))
         else:
             submit.bind(on_press=self.submit_popup.open)
@@ -76,7 +78,7 @@ class MainScreen(BoxLayout):
         run.bind(on_press=self.run)
 
         ex_dropdown = Spinner(text=self.current_ex,size_hint=(1,1))
-        ex_dropdown.values = self.element.exercises()
+        ex_dropdown.values = self.res.exercises()
         ex_dropdown.bind(text=self.updateExercise)
 
         layout.add_widget(run)
@@ -141,7 +143,7 @@ class MainScreen(BoxLayout):
 
     def updateExercise(self,spinner,text):
         self.current_ex=text
-        current_file = self.element.files(self.current_ex)[0]
+        current_file = self.res.files(self.current_ex)[0]
         if current_file.endswith('\n'):
             current_file=current_file[:-1]
         self.current_file= current_file
@@ -153,16 +155,19 @@ class MainScreen(BoxLayout):
     def run(self,instance):
         #TODO: Display output in popup
         #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
-        command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
-        #self.show_message('Running Exercise',1)
-        print "Running"
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.draw_runscreen()
+        self.terminal.text = 'Running exercises'
+        self.terminal.text = 'Boom boom'
+        # command = ["python","../"+self.current_ex+"/"+self.current_ex+".py"]
+        # #self.show_message('Running Exercise',1)
+        # print "Running"
+        # process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         
-        output , error= process.communicate()
-        #self.show_error(output)
-        if not error == '':
-            self.show_error(error)
+        # output , error= process.communicate()
+        # #self.show_error(output)
+        # if not error == '':
+        #     self.show_error(error)
         
         #while True:
         #     #Bind self.info_label.text to output.stdout.readline()
@@ -181,8 +186,8 @@ class MainScreen(BoxLayout):
         else:
             layout.orientation='horizontal'
         #self.bind(self.current_ex=self.update_currentFile)
-        man = self.element.manual(self.current_ex)
-        codeFile = self.element.readFile(self.current_ex,self.current_file)
+        man = self.res.manual(self.current_ex)
+        codeFile = self.res.readFile(self.current_ex,self.current_file)
         code = CodeInput(text=codeFile)
         code.bind(focus =self.schedule_reload)
         splitter = Splitter()
@@ -196,15 +201,16 @@ class MainScreen(BoxLayout):
         if args[0]=='e':
             layout.add_widget(RstDocument(text=man))
         else:
+            self.terminal = TextInput(size_hint=(1,1),readonly=True,background_color=(0,0,0,1),foreground_color=(1,1,0,1),opacity=100)
+            layout.add_widget(self.terminal)
 
-            layout.add_widget(terminal)
         return layout
 
     def saveAssignment(self,assignment,*largs):
         self.show_message('Autosaved',1)
         try:
-            if not self.element.readFile(self.current_ex,self.current_file)==assignment.text:
-                filehandler = self.element.writeFile(self.current_ex,self.current_file)
+            if not self.res.readFile(self.current_ex,self.current_file)==assignment.text:
+                filehandler = self.res.writeFile(self.current_ex,self.current_file)
                 filehandler.write(assignment.text)
                 print 'INFO: Autosaved file'
         except Exception, e:
@@ -229,7 +235,7 @@ class MainScreen(BoxLayout):
         layout = GridLayout(rows=1, size_hint=(None,None))
         layout.bind(minimum_width=layout.setter('width'))
 
-        files = list(set(self.element.files(self.current_ex)))
+        files = list(set(self.res.files(self.current_ex)))
         for f in files:
             if f.strip() == self.current_file:
                 button = ToggleButton(text=f,group = self.current_ex,state='down')
