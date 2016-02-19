@@ -27,7 +27,7 @@ __all__ = ['submit']
 #     'gradientDescentMulti.py',
 #     'normalEqn.py',
 #     ]
-part_file = open('part_names.json')
+part_file = open('part_file.json')
 part_file = json.load(part_file)
 
 def output(part_id):
