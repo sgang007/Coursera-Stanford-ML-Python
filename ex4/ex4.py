@@ -133,8 +133,8 @@ raw_input("Program paused. Press Enter to continue...")
 
 print 'Initializing Neural Network Parameters ...'
 
-initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size)
-initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels)
+initial_Theta1 = randInitializeWeights(input_layer_size+1, hidden_layer_size)
+initial_Theta2 = randInitializeWeights(hidden_layer_size+1, num_labels)
 
 # Unroll parameters
 initial_nn_params = np.hstack((initial_Theta1.T.ravel(), initial_Theta2.T.ravel()))
