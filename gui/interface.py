@@ -1,5 +1,6 @@
 import subprocess
 import kivy
+import time
 kivy.require('1.8.0')
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -21,7 +22,32 @@ from kivy.animation import Animation
 from Submission import Submission
 from resource_handle import resourceHandler
 
+#Overriding write function of file object
+import sys
+import StringIO
+import contextlib
+class Proxy(object):
+    def __init__(self,stdout,stringio):
+        self._stdout = stdout
+        self._stringio = stringio
+    def __getattr__(self,name):
+        if name in ('_stdout','_stringio','write'):
+            object.__getattribute__(self,name)
+        else:
+            return getattr(self._stringio,name)
+    def write(self,data):
+         self._stdout.write(data)
+         self._stringio.write(data)
 
+#Stream redirecter
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = StringIO.StringIO()
+    sys.stdout = Proxy(sys.stdout,stdout)
+    yield sys.stdout
+    sys.stdout = old
 
 class MainScreen(BoxLayout):
 
@@ -157,19 +183,30 @@ class MainScreen(BoxLayout):
         #output = subprocess.check_output(["python","../"+self.current_ex+"/"+self.current_ex+".py"],stderr=subprocess.PIPE)
         self.draw_runscreen()
         self.terminal.text = 'Running '+self.current_ex
-        output, error = self.res.run_ex(self.current_ex,self.current_file)
+        code= self.res.run_ex(self.current_ex,self.current_file)
+        #print code
+        # time.sleep(1)
+#         code = """
+# import time
+# i = [0,1,2]
+# for j in i :
+#     print o
+#     time.sleep(5)
+# """
+        with stdoutIO() as s:
+            exec code
 
         # os.chdir('exercises/'+self.current_ex)
         # command = ["python",self.current_ex+".py"]
-        # #self.show_message('Running Exercise',1)
+        #self.show_message('Running Exercise',1)
         # print "Running"
         #process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         
         #output , error= process.communicate()
-        self.terminal.text = output
-        if not error == '':
-             self.show_error(error)
+        # self.terminal.text = output
+        # if not error == '':
+        self.show_error('THis is an error')
         
         #while True:
         #     #Bind self.info_label.text to output.stdout.readline()

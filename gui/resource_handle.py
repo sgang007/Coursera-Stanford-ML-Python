@@ -62,23 +62,23 @@ class resourceHandler():
 
     def run_ex(self,exercise,filename):
         #redirect and change system streams
-        os.chdir('exercises/'+exercise)
-        os.system('export PYTHONPATH=../..')
+        # os.chdir('exercises/'+exercise)
+        # os.system('export PYTHONPATH=../..')
         
-
-        split_ex = open(filename).read().split('raw_input("Program paused. Press Enter to continue...")')
-        code = split_ex[0]
+        path = 'exercises/'+exercise+'/'+filename
+        split_ex = open(path).read().split('raw_input("Program paused. Press Enter to continue...")')
+        #redirected_output = sys.stdout = StringIO()code = split_ex[0]
         
-        with stdoutIO() as s:
-            exec(code)
-        #output = subprocess.Popen(code, stdout=subprocess.PIPE)
-        #restore system streams
-        os.chdir('../..')
+        # with stdoutIO() as s:
+        #     exec(code)
+        # #output = subprocess.Popen(code, stdout=subprocess.PIPE)
+        # #restore system streams
+        # os.chdir('../..')
 
         # output = codeOut.getvalue()
         # error = codeErr.getvalue()
         
-        print 'output: ',s.getvalue(),''
-        return s.getvalue(),''
+        #print 'output: ',s.getvalue(),''
+        return split_ex[0]
 
 
