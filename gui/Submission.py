@@ -22,6 +22,9 @@ class Submission():
         self.__login = None
         self.__password = None
 
+    def __init__(self):
+        pass
+
     def submit(self):
         print '==\n== Submitting Solutions | Programming Exercise %s\n==' % self.__homework
         self.login_prompt()

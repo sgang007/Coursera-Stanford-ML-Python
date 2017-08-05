@@ -23,16 +23,15 @@ from resource_handle import resourceHandler
 
 
 
-class MainScreen(BoxLayout):
+class MainScreen(BoxLayout,Submission):
 
     def __init__(self, welcome=False, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
         self.orientation='vertical'
         self.current_ex = 'ex1'
         self.current_file = 'warmUpExercise.py'
-        #self.submit_ob = Submission()
         self.element=resourceHandler()
-
+        #self.= Submission()
         if welcome:
             welcome_popup = Popup(title='Coursera ML in Python', content=Label(text='Coursera Assignment App'),size_hint=(1, 1))
             self.add_widget(welcome_popup)
@@ -62,16 +61,16 @@ class MainScreen(BoxLayout):
         layout=BoxLayout(padding='2sp',size_hint=(1,None),height='65sp')
         layout.orientation='horizontal'
 
-        #credentials = self.accept_credentials()
-        self.submit_popup = Popup(title='Enter credentials',content=self.accept_credentials(),size_hint=(0.6, 0.35))
+        #credentials = self.login_prompt()
+        self.submit_popup = Popup(title='Enter credentials',content=self.login_prompt(),size_hint=(0.6, 0.35))
         #credentials.children[1].bind(on_press=self.submit_popup.dismiss)
 
         submit = Button(text='Submit',size_hint=(0.4,1))
-        if self.element.read_token(self):
-            submit.bind(on_press=partial(self.submit_assignment))
-        else:
-            submit.bind(on_press=self.submit_popup.open)
-
+        # if self.element.read_token(self):
+        #     submit.bind(on_press=partial(self.submit_assignment))
+        # else:
+        #     submit.bind(on_press=self.submit_popup.open)
+        submit.bind(on_press=partial(self.submit_assignment))
         run = Button(text='Run',size_hint=(0.4,1))
         run.bind(on_press=self.run)
 
@@ -97,7 +96,7 @@ class MainScreen(BoxLayout):
         return layout
 
 
-    def accept_credentials(self):
+    def login_prompt(self):
         main_layout= BoxLayout(padding='2sp')
         main_layout.orientation='vertical'
         layout=GridLayout(padding='2sp')
@@ -115,28 +114,31 @@ class MainScreen(BoxLayout):
         return main_layout
 
     def submit_assignment(self,*largs):
-        #Make submit_ob local if not used anywhere else 
-        if len(largs)>1:
-            self.submit_ob.__login = largs[0].text
-            self.submit_ob.__password = largs[1].text
-        else:
-            self.submit_ob.__login=self.email
-            self.submit_ob.__password=self.token
+        #Make local if not used anywhere else 
+        super(MainScreen).__homework = self.element.homework(self.current_ex)
 
-        print 'Email',self.submit_ob.__login
-        print 'Token', self.submit_ob.__password
+        self.submit()
+        if len(largs)>1:
+            self.__login = largs[0].text
+            self.__password = largs[1].text
+        else:
+            self.__login=self.email
+            self.__password=self.token
+
+        print 'Email',self.__login
+        print 'Token', self.__password
         self.submit_popup.dismiss()
 
         #TODO: save token and give submission call
-        command = ["python","../"+self.current_ex+"/"+"submit.py"]
+        # command = ["python","exercises/"+self.current_ex+"/"+"submit.py"]
 
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
-        output,error= process.communicate()
-        self.show_error(output)
-        if not error == '':
-            self.show_error(error)
-        #self.show_error(self.submit_ob.submit())
+        # output,error= process.communicate()
+        # #self.show_error(output)
+        # if not error == '':
+        #     self.show_error(error)
+        #self.show_error(self.submit())
 
 
     def updateExercise(self,spinner,text):
