@@ -1,0 +1,7 @@
+warmUpExercise.py
+computeCost.py
+gradientDescent.py
+featureNormalize.py
+computeCostMulti.py
+gradientDescentMulti.py
+normalEqn.py

@@ -1,0 +1,6 @@
+Sigmoid Function
+Logistic Regression Cost
+Logistic Regression Gradient
+Predict
+Regularized Logistic Regression Cost
+Regularized Logistic Regression Gradient

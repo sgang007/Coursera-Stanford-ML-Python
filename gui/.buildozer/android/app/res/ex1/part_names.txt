@@ -1,0 +1,7 @@
+Warm up exercise
+Computing Cost (for one variable)
+Gradient Descent (for one variable)
+Feature Normalization
+Computing Cost (for multiple variables)
+Gradient Descent (for multiple variables)
+Normal Equations
