@@ -1,20 +1,31 @@
 import numpy as np
 
-def computeCost(X, y, theta):
+
+def featureNormalize(X):
     """
-       computes the cost of using theta as the parameter for linear 
-       regression to fit the data points in X and y
+       returns a normalized version of X where
+       the mean value of each feature is 0 and the standard deviation
+       is 1. This is often a good preprocessing step to do when
+       working with learning algorithms.
     """
-    m = y.size
-    J = 0
+    X_norm, mu, sigma = 0,0,0
+    # ====================== YOUR CODE HERE ======================
+    # Instructions: First, for each feature dimension, compute the mean
+    #               of the feature and subtract it from the dataset,
+    #               storing the mean value in mu. Next, compute the
+    #               standard deviation of each feature and divide
+    #               each feature by it's standard deviation, storing
+    #               the standard deviation in sigma.
+    #
+    #               Note that X is a matrix where each column is a
+    #               feature and each row is an example. You need
+    #               to perform the normalization separately for
+    #               each feature.
+    #
+    # Hint: You might find the 'mean' and 'std' functions useful.
+    #
 
-# ====================== YOUR CODE HERE ======================
-# Instructions: Compute the cost of a particular choice of theta
-#               You should set J to the cost.
 
+# ============================================================
 
-# =========================================================================
-
-    return J
-
-
+    return X_norm, mu, sigma
